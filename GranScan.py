@@ -40,11 +40,12 @@ def scatter_plot(coords, convex_hull=None):
 
 points = [[4, 6], [2, 5], [4, 3], [0, 0], [2, 2], [5, 4], [4, 0], [0, 5]]
 indexes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+hull = graham(points)
 
 print('\nPontos:')
 for i in range(0, len(points)):
     print(f'{indexes[i]}: {points[i]}')
 
-print(f'\nEnvoltória Convexa:\n{graham(points)}')
+print(f'\nEnvoltória Convexa:\n{hull}')
 
-scatter_plot(points, graham(points))
+scatter_plot(points, hull)
