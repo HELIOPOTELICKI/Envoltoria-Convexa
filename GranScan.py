@@ -3,7 +3,7 @@ from functools import reduce
 
 
 def graham(points):
-    TURN_LEFT, TURN_RIGHT, TURN_NONE = (1, -1, 0)
+    TURN_LEFT = 1
 
     def cmp(a, b):
         return (a > b) - (a < b)
