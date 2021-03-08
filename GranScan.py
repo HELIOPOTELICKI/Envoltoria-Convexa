@@ -1,7 +1,5 @@
+from matplotlib import pyplot as plt
 from functools import reduce
-from io import BytesIO
-from PIL import Image
-import requests
 
 
 def graham(points):
@@ -27,6 +25,19 @@ def graham(points):
     return l.extend(u[i] for i in range(1, len(u) - 1)) or l
 
 
+def scatter_plot(coords, convex_hull=None):
+    xs, ys = zip(*coords)
+    plt.scatter(xs, ys)
+
+    if convex_hull != None:
+        for i in range(1, len(convex_hull) + 1):
+            if i == len(convex_hull): i = 0
+            c0 = convex_hull[i - 1]
+            c1 = convex_hull[i]
+            plt.plot((c0[0], c1[0]), (c0[1], c1[1]), 'r')
+    plt.show()
+
+
 points = [[4, 6], [2, 5], [4, 3], [0, 0], [2, 2], [5, 4], [4, 0], [0, 5]]
 indexes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
@@ -36,8 +47,4 @@ for i in range(0, len(points)):
 
 print(f'\nEnvoltória Convexa:\n{graham(points)}')
 
-imgUrl = 'https://uploaddeimagens.com.br/images/003/118/011/original/points.png?1615165544'
-response = requests.get(imgUrl)
-image_bytes = BytesIO(response.content)
-img = Image.open(image_bytes)
-img.show()
+scatter_plot(points, graham(points))
