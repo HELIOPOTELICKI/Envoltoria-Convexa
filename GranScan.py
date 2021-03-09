@@ -3,7 +3,7 @@ from functools import reduce
 
 
 def graham(points):
-    TURN_LEFT = 1
+    TURN_RIGHT = -1
 
     def cmp(a, b):
         return (a > b) - (a < b)
@@ -13,7 +13,7 @@ def graham(points):
             (q[0] - p[0]) * (r[1] - p[1]) - (r[0] - p[0]) * (q[1] - p[1]), 0)
 
     def _keep_left(hull, r):
-        while len(hull) > 1 and turn(hull[-2], hull[-1], r) != TURN_LEFT:
+        while len(hull) > 1 and turn(hull[-2], hull[-1], r) == TURN_RIGHT:
             hull.pop()
         if not len(hull) or hull[-1] != r:
             hull.append(r)
@@ -39,7 +39,10 @@ def scatter_plot(coords, convex_hull=None):
 
 
 points = [[4, 6], [2, 5], [4, 3], [0, 0], [2, 2], [5, 4], [4, 0], [0, 5]]
-indexes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+indexes = [
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+    'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+]
 hull = graham(points)
 
 print('\nPontos:')
