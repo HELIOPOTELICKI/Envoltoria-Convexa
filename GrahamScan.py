@@ -2,27 +2,29 @@ from matplotlib import pyplot as plt
 from functools import reduce
 
 
-def graham(points):
-    TURN_RIGHT = -1
-
+def CCW(p1, p2, p3):
     def cmp(a, b):
         return (a > b) - (a < b)
 
-    def turn(p, q, r):
-        return cmp(
-            (q[0] - p[0]) * (r[1] - p[1]) - (r[0] - p[0]) * (q[1] - p[1]), 0)
+    return cmp(
+        (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]),
+        0)
 
-    def _keep_left(hull, r):
-        while len(hull) > 1 and turn(hull[-2], hull[-1], r) == TURN_RIGHT:
+
+def graham_scan(points):
+    TURN_LEFT, TURN_RIGHT, TURN_NONE = (1, -1, 0)
+
+    def keep_left(hull, temp):
+        while len(hull) > 1 and CCW(hull[-2], hull[-1], temp) != TURN_LEFT:
             hull.pop()
-        if not len(hull) or hull[-1] != r:
-            hull.append(r)
+        if not len(hull) or hull[-1] != temp:
+            hull.append(temp)
         return hull
 
     points = sorted(points)
-    l = reduce(_keep_left, points, [])
-    u = reduce(_keep_left, reversed(points), [])
-    return l.extend(u[i] for i in range(1, len(u) - 1)) or l
+    sup = reduce(keep_left, points, [])
+    inf = reduce(keep_left, reversed(points), [])
+    return sup.extend(inf[i] for i in range(1, len(inf) - 1)) or sup
 
 
 def scatter_plot(coords, convex_hull=None):
@@ -38,12 +40,15 @@ def scatter_plot(coords, convex_hull=None):
     plt.show()
 
 
+#======================================== MAIN ========================================#
+
 points = [[4, 6], [2, 5], [4, 3], [0, 0], [2, 2], [5, 4], [4, 0], [0, 5]]
 indexes = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
     'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
 ]
-hull = graham(points)
+
+hull = graham_scan(points)
 
 print('\nPontos:')
 for i in range(0, len(points)):
